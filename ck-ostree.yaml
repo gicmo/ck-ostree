@@ -1,7 +1,16 @@
 ref: ck/${basearch}/ostree
 
-automatic_version_prefix: "1.<date:%Y%m%d>.dev"
-mutate-os-release: "1"
+releasever: "31"
+automatic_version_prefix: "31.<date:%Y%m%d>.ck"
+mutate-os-release: "31"
+
+rojig:
+  name: fedora-ck
+  summary: "Fedora CK spin"
+  license: MIT
+
+repos:
+  - fedora
 
 selinux: true
 documentation: false
@@ -10,8 +19,6 @@ boot_location: new
 etc-group-members:
   - wheel
 tmp-is-dir: true
-
-postprocess-script: post.sh
 
 ignore-removed-users:
   - root
