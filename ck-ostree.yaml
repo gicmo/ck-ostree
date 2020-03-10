@@ -1,0 +1,75 @@
+ref: ck/${basearch}/ostree
+
+automatic_version_prefix: "1.<date:%Y%m%d>.dev"
+mutate-os-release: "1"
+
+selinux: true
+documentation: false
+recommends: false
+boot_location: new
+etc-group-members:
+  - wheel
+tmp-is-dir: true
+
+postprocess-script: post.sh
+
+ignore-removed-users:
+  - root
+ignore-removed-groups:
+  - root
+check-passwd: { type: file, filename: passwd }
+check-groups: { type: file, filename: group }
+
+default-target: multi-user.target
+
+# arch specific packages
+packages-aarch64:
+  - grub2-efi-aa64 efibootmgr shim
+packages-armhfp:
+  - extlinux-bootloader
+packages-ppc64le:
+  - grub2 ostree-grub2
+packages-s390x:
+  - s390utils-base
+packages-x86_64:
+  - grub2 grub2-efi-x64 efibootmgr shim
+  - microcode_ctl
+
+
+packages:
+  # the very base
+  - kernel kernel-core kernel-modules systemd
+  - rpm-ostree nss-altfiles
+
+  - dracut-network
+
+  # 
+  - git-core
+  - gnupg2
+  - rsync
+
+  #
+  - fedora-release
+  
+  # Updates
+  - fedora-repos-ostree
+
+  # 
+  - selinux-policy-targeted
+  - polkit
+  - passwd
+  
+  # SSH
+  - NetworkManager hostname
+  - openssh-server openssh-clients
+  - iptables nftables iptables-nft iptables-services
+
+  - chrony
+  - sssd shadow-utils
+  
+  #
+  - bash fish
+  - sudo coreutils attr less tar xz gzip bzip2
+  
+exclude-packages:
+  - PackageKit
